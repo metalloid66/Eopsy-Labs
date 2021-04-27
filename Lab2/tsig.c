@@ -119,3 +119,10 @@ int main() {
 		exit(0);
 	}
 #endif
+/* References: 
+Signals in C: https://www.geeksforgeeks.org/signals-c-language/
+Fork in C: https://www.geeksforgeeks.org/fork-system-call/
+Introduction to unix signals programming: http://www.cs.kent.edu/~ruttan/sysprog/lectures/signals.html 
+Singal types: http://www.cs.kent.edu/~ruttan/sysprog/lectures/signal.7.html
+*/
+
