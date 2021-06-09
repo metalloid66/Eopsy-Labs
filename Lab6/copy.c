@@ -8,10 +8,8 @@
 #include <string.h>
 
 void help();
-void copyMain(const char * fdSrc,
-  const char * fdDst);
-void copyMmap(const char * fdSrc,
-  const char * fdDst);
+void copyMain(const char * fdSrc,const char * fdDst);
+void copyMmap(const char * fdSrc,const char * fdDst);
 
 int main(int argc, char ** argv) {
   int opt;
@@ -54,8 +52,7 @@ int main(int argc, char ** argv) {
   return 0;
 }
 
-void copyMain(const char * fdSrc,
-  const char * fdDst) {
+void copyMain(const char * fdSrc, const char * fdDst) {
   int copyFrom = open(fdSrc, O_RDONLY);
   int copyTo = open(fdDst, O_CREAT | O_RDWR);
   if (copyFrom == -1 || copyTo == -1) {
@@ -76,8 +73,7 @@ void copyMain(const char * fdSrc,
   close(copyFrom);
   close(copyTo);
 }
-void copyMmap(const char * fdSrc,
-  const char * fdDst) {
+void copyMmap(const char * fdSrc, const char * fdDst) {
   int copyFrom = open(fdSrc, O_RDONLY, 0644);
   int copyTo = open(fdDst, O_CREAT | O_RDWR, 0644);
   if (copyFrom == -1 || copyTo == -1) {
