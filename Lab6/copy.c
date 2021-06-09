@@ -5,9 +5,13 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <strings.h>
+#include <string.h>
 
 void help();
-void copyMain(const char * fdSrc, const char * fdDst);
+void copyMain(const char * fdSrc,
+  const char * fdDst);
+void copyMmap(const char * fdSrc,
+  const char * fdDst);
 
 int main(int argc, char ** argv) {
   int opt;
@@ -44,7 +48,7 @@ int main(int argc, char ** argv) {
   }
   if (optFlag == 1) {
     printf("Content To be Copied with memory map \n");
-    copyMain(fdSrc, fdDst);
+    copyMmap(fdSrc, fdDst);
   }
 
   return 0;
@@ -71,6 +75,32 @@ void copyMain(const char * fdSrc,
   write(copyTo, buffer, size);
   close(copyFrom);
   close(copyTo);
+}
+void copyMmap(const char * fdSrc,
+  const char * fdDst) {
+  int copyFrom = open(fdSrc, O_RDONLY, 0644);
+  int copyTo = open(fdDst, O_CREAT | O_RDWR, 0644);
+  if (copyFrom == -1 || copyTo == -1) {
+    printf("File %s does not exist. Please provide a valid file. Copy failed.\n", fdSrc);
+    return;
+  }
+
+  struct stat statbuf;
+  if (fstat(copyFrom, & statbuf) < 0) {
+    printf("File status failed. Copy failed.\n");
+    return;
+  }
+  const unsigned size = statbuf.st_size;
+  ftruncate(copyTo, size);
+  char * inmem = (char * ) mmap(0, size, PROT_READ, MAP_SHARED, copyFrom, 0);
+  char * outmem = (char * ) mmap(0, size, PROT_WRITE, MAP_SHARED, copyTo, 0);
+
+  if (inmem == MAP_FAILED || outmem == MAP_FAILED) {
+    printf("Mapping failed. Copy failed.\n");
+    return;
+  }
+
+  memcpy(outmem, inmem, size);
 }
 
 void help() {
