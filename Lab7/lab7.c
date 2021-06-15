@@ -54,8 +54,7 @@ void *philo(void *num) {
   statePhilo[philo_id] = THINKING;
   printf("Philosopher %d is thinking\n", philo_id);
   sleep(1);
-
-  // Left fork and Right fork distribution: 
+  
   right_fork = (philo_id + 1) % NUM_PHILO;
   left_fork = (philo_id + (NUM_PHILO - 1)) % NUM_PHILO;
 
