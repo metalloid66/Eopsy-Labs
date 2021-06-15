@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
 void *philo(void *num) {
 
   int i, philo_id, left_fork, right_fork, f;
-
   philo_id = (int) num;
 
   statePhilo[philo_id] = THINKING;
